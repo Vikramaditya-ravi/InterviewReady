@@ -11,52 +11,43 @@
 class Solution {
     
     
-       public ListNode reverseListIterative(ListNode head) {
+          public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack1 = new Stack<>();
 
-        ListNode newNode = null;
-
-        while (head != null) {
-            ListNode temp = head.next;
-            head.next = newNode;
-            newNode = head;
-            head = temp;
+        while (l1 != null) {
+            stack.push(l1.val);
+            l1 = l1.next;
         }
-        return newNode;
-    }
+        while (l2 != null) {
+            stack1.push(l2.val);
+            l2 = l2.next;
+        }
 
-    public ListNode utility(ListNode l1, ListNode l2) {
+
+        ListNode curr = null;
         int carry = 0;
-        ListNode res = new ListNode(-1);
-        ListNode dummy = res;
 
-        while (l1 != null || l2 != null || carry == 1) {
+        while (!stack1.isEmpty() || !stack.isEmpty() || carry == 1) {
             int sum = 0;
 
-            if(l1!= null){
-                sum+=l1.val;
-                l1 = l1.next;
-            }
-            if (l2!= null){
-                sum+=l2.val;
-                l2 = l2.next;
 
+            if (!stack1.isEmpty()) {
+                sum += stack1.pop();
             }
-            sum+=carry;
-            ListNode node = new ListNode((sum%10));
-            res.next = node;
-            res = res.next;
-            carry = sum/10;
+            if (!stack.isEmpty()) {
+                sum += stack.pop();
+            }
+            sum += carry;
+            ListNode newNode = new ListNode((sum % 10));
+            newNode.next = curr;
+            curr = newNode;
+            carry = sum / 10;
+
         }
-        return dummy.next;
-
-    }
-
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        l1 = reverseListIterative(l1);
-        l2 = reverseListIterative(l2);
-        ListNode result = utility(l1, l2);
-        return reverseListIterative(result);
+        return curr;
 
 
     }
+
 }
