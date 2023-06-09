@@ -14,42 +14,39 @@
  * }
  */
 class Solution {
-     public List<List<Integer>> utility (TreeNode root){
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+      public Double average(List<Integer> list) {
 
-        if(root == null) return wrapList;
+        Double sum = 0D;
 
-        queue.offer(root);
-        while(!queue.isEmpty()){
-            int levelNum = queue.size();
-            List<Integer> subList = new LinkedList<Integer>();
-            for(int i=0; i<levelNum; i++) {
-                if(queue.peek().left != null) queue.offer(queue.peek().left);
-                if(queue.peek().right != null) queue.offer(queue.peek().right);
-                subList.add(queue.poll().val);
-            }
-            wrapList.add(subList);
+        for (Integer integer : list) {
+            sum = sum + integer;
         }
-        return wrapList;
+        return (sum / list.size());
     }
 
     public List<Double> averageOfLevels(TreeNode root) {
         List<Double> result = new ArrayList<>();
-        if(root == null){
+
+        if (root == null) {
             return result;
         }
-        List<List<Integer>> list = new ArrayList<>();
-        list = utility(root);
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                TreeNode temp = queue.poll();
+                if (temp.left != null) {
+                    queue.add(temp.left);
+                }
+                if (temp.right != null) {
+                    queue.add(temp.right);
+                }
+                list.add(temp.val);
 
-        for (int i = 0; i < list.size(); i++) {
-            Double sum = 0D;
-            for (int j = 0; j < list.get(i).size(); j++) {
-                sum+=list.get(i).get(j);
-                
             }
-            result.add(sum/list.get(i).size());
-            
+            result.add(average(list));
         }
         return result;
 
