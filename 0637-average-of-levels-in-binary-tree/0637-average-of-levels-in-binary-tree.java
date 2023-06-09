@@ -13,16 +13,7 @@
  *     }
  * }
  */
-class Solution {
-      public Double average(List<Integer> list) {
-
-        Double sum = 0D;
-
-        for (Integer integer : list) {
-            sum = sum + integer;
-        }
-        return (sum / list.size());
-    }
+class Solution {    
 
     public List<Double> averageOfLevels(TreeNode root) {
         List<Double> result = new ArrayList<>();
@@ -34,7 +25,7 @@ class Solution {
         queue.offer(root);
         while (!queue.isEmpty()) {
             int n = queue.size();
-            List<Integer> list = new ArrayList<>();
+            Double sum = 0D;
             for (int i = 0; i < n; i++) {
                 TreeNode temp = queue.poll();
                 if (temp.left != null) {
@@ -43,10 +34,9 @@ class Solution {
                 if (temp.right != null) {
                     queue.add(temp.right);
                 }
-                list.add(temp.val);
-
+                sum += temp.val;
             }
-            result.add(average(list));
+            result.add(sum / n);
         }
         return result;
 
