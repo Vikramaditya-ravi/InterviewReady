@@ -1,86 +1,87 @@
-class UnionFind{
-    final int[] parents;
+// package com.ravi.codeChef.August.aug14.aug19;
+
+import java.util.*;
+class Unionfind{
     int count;
-    
-    public UnionFind(int n){
-        this.parents = new int[n];
+    int[] parent;
+
+    public Unionfind(int n ) {
+        parent = new int[n];
         reset();
     }
-    
     public void reset(){
-        for(int i =0;i<parents.length;i++){
-            parents[i] = i;
+        for (int i = 0; i < parent.length; i++) {
+            parent[i] = i;
         }
-        count = parents.length;
+        count = parent.length;
     }
-    
-    public int find(int i){
-        
-        if(parents[i] != i){
-            parents[i] = find(parents[i]);
+    public int find(int x){
+        if(parent[x] != x){
+            parent[x] = find(parent[x]);
         }
-        return parents[i];
+        return parent[x];
     }
-    
-    public boolean union(int i, int j){
-        int r1 = find(i);
-        int r2 = find(j);
-        if(r1 != r2){
+    public boolean union(int a, int b){
+        int x = find(a);
+        int y = find(b);
+        if(x != y){
             count--;
-            parents[r1] = r2;
+            parent[y] = x;
             return true;
-        }else{
+        }
+        else {
             return false;
         }
     }
-    
+
 }
 
-class Solution {
+public class Solution {
     public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
-       
-        List<Integer>criticals = new ArrayList<>();
-        List<Integer> pseduos = new ArrayList<>();
-        
-        Map<int[], Integer> map = new HashMap<>();
-        for(int i =0;i<edges.length;i++){
-            map.put(edges[i], i);
+        List<Integer> critical = new ArrayList<>();
+        List<Integer> pseudo = new ArrayList<>();
+        HashMap<int[], Integer> map = new HashMap<>();
+        for (int i = 0; i < edges.length;i++) {
+            map.put(edges[i],i);
         }
-        
-        Arrays.sort(edges, (e1, e2)->Integer.compare(e1[2], e2[2]));
-        int minCost = buildMST(n, edges, null, null);
-        
-        for(int i =0;i<edges.length;i++){
-            int[] edge = edges[i];
+        Arrays.sort(edges, Comparator.comparingInt(e -> e[2]));
+        int minCost = builtMST(n,edges,null,null);
+
+        for (int[] edge : edges) {
             int index = map.get(edge);
-            int costWithout = buildMST(n, edges, null, edge);
-            if(costWithout > minCost){
-                criticals.add(index);
-            }else{
-                int costWith = buildMST(n, edges, edge, null);
-                if(costWith == minCost){
-                    pseduos.add(index);
+            int costWithout = builtMST(n, edges, null, edge);
+            if (costWithout > minCost) {
+                critical.add(index);
+            } else {
+                int costWith = builtMST(n, edges, edge, null);
+                if (costWith == costWithout) {
+                    pseudo.add(index);
                 }
+
             }
-            
-        }
-        
-        return Arrays.asList(criticals, pseduos);
+        }   
+        return Arrays.asList(critical,pseudo);
     }
-    
-    private int buildMST(int n, int[][] edges, int[] pick, int[] skip){
-        UnionFind uf = new UnionFind(n);
+    private int builtMST(int n, int[][] edges, int[] pick,int[] skip){
+        Unionfind uf = new Unionfind(n);
         int cost = 0;
-        if(pick != null){
-            uf.union(pick[0], pick[1]);
-            cost += pick[2];
+
+        if (pick!= null){
+            uf.union(pick[0],pick[1]);
+            cost+=pick[2];
+
         }
-        
-        for(int[] edge : edges){
-            if(edge != skip && uf.union(edge[0], edge[1])){
-                cost += edge[2];
+        for (int[] edge:edges){
+            if (edge != skip && uf.union(edge[0],edge[1])){
+                cost+=edge[2];
             }
         }
-        return uf.count == 1? cost : Integer.MAX_VALUE;
+        if (uf.count == 1){
+            return cost;
+        }
+        else {
+            return Integer.MAX_VALUE;
+        }
+
     }
 }
