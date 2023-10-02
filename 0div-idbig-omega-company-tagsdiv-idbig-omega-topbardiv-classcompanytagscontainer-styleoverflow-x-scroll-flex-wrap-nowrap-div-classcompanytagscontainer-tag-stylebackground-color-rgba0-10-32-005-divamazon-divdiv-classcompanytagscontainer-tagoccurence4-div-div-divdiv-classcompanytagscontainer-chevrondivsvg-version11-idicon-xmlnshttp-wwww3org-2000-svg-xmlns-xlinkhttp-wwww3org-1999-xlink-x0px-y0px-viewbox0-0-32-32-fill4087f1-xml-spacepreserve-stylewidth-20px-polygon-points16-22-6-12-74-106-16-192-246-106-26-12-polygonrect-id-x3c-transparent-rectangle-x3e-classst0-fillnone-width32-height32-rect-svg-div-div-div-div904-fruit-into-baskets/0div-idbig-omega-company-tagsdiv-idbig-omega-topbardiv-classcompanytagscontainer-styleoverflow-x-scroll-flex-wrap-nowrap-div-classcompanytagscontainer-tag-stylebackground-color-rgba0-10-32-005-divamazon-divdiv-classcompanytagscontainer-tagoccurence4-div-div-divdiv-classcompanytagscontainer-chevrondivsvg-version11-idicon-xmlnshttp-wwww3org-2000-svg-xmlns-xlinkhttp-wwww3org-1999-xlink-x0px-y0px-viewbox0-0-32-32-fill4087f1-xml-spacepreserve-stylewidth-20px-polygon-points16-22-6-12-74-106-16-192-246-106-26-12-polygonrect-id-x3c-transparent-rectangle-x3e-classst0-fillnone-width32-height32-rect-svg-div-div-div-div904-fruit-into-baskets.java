@@ -9,12 +9,7 @@ class Solution {
          int start = 0;
 
          for (int i = 0; i < n; i++) {
-             map.put(fruits[i],map.getOrDefault(fruits[i],0)+1);
-             if(map.size() < 2){
-                              result = Math.max(result,i-start+1);
-
-                 continue;
-             }
+             map.put(fruits[i],map.getOrDefault(fruits[i],0)+1);           
              while (map.size() > 2){
                  map.put(fruits[start],map.get(fruits[start])-1);
                  if (map.get(fruits[start]) == 0){
