@@ -1,29 +1,23 @@
 class Solution {
     
      public static String utility(String str){
-        int n = str.length();
+         int n = str.length();
         if (n == 0) {
             return "";
-        }       
-        Stack<Character> st = new Stack<>();
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < n; i++) {
-            if (str.charAt(i) == '#') {
-                if (st.size() > 0) {
-                    st.pop();
-
-                }
-            } else {
-                st.push(str.charAt(i));
-            }
         }
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int i = n - 1; i >= 0; i--) {
+            if (str.charAt(i) != '#') {
+                if (count > 0) {
+                    count--;
+                } else {
+                    sb.append(str.charAt(i));
+                }
 
-       int size = st.size();
-
-        for (int i = 0; i <size; i++) {
-            sb.append(st.pop());
-
+            } else {
+                count++;
+            }
         }
         return sb.toString();
         
