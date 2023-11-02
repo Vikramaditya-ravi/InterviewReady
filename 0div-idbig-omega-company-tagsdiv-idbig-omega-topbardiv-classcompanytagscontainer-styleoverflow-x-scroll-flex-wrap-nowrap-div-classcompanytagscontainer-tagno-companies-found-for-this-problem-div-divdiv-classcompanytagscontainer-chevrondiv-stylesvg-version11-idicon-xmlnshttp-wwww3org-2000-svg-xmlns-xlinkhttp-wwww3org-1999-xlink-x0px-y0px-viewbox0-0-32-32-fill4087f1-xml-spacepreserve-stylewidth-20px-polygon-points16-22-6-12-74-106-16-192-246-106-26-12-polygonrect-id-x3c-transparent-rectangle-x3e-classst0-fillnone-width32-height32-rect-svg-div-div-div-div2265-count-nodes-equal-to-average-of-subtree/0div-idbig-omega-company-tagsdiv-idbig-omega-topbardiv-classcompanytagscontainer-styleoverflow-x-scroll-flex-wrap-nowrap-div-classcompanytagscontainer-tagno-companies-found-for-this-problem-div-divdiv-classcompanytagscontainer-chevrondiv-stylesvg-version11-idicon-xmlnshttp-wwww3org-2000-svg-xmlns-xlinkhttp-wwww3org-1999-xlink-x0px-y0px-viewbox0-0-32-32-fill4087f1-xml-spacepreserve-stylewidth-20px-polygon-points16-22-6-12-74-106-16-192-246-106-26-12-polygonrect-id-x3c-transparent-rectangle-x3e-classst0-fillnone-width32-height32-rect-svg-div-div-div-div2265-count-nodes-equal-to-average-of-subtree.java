@@ -14,7 +14,7 @@
  * }
  */
 class Solution {
-       public static int count;
+       public  int count;
     public int preOrder2(TreeNode root) {
         if (root == null) {
             return 0;
