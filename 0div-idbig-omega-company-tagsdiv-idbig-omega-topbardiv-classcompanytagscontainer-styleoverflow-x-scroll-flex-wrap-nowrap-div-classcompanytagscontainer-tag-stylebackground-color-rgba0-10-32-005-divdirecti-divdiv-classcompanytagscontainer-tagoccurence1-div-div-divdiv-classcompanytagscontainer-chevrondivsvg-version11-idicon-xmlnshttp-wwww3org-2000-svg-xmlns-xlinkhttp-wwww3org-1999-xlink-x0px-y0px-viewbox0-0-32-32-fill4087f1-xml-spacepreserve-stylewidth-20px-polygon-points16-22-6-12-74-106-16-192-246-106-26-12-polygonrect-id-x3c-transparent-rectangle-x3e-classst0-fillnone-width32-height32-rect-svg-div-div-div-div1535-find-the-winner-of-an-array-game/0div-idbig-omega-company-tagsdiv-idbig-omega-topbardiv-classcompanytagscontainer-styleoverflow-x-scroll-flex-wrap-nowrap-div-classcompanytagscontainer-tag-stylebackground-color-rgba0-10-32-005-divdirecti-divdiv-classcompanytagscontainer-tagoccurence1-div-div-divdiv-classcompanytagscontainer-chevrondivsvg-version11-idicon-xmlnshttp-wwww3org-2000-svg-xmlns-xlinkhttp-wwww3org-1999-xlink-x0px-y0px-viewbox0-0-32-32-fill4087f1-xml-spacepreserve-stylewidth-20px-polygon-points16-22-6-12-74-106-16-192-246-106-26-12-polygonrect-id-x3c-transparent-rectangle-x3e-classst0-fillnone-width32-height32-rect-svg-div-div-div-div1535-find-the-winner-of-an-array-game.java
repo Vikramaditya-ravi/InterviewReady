@@ -1,26 +1,30 @@
 class Solution {
     public int getWinner(int[] arr, int k) {
-        int i = 0; int j =1;
-        int win_count = 0;
-        int n  = arr.length;
-        while(i<n && j < n){            
-            if(arr[i] > arr[j]){
-                win_count++;
-                j++;
-                
-            }
-            else{
-                i = j;
-                j++;
-                win_count = 1;
-                
-            }
-            
-            if (win_count == k){
-                return arr[i];
-            }
-        }            
+                int n  = arr.length;
+
+        if(k == 1){
+            return Math.max(arr[0],arr[1]);
+        }
+        if( k >= n){
+            return Arrays.stream(arr).max().getAsInt();
+        }     
         
-        return arr[i];
+        int temp = arr[0];
+        int win_count = 0;
+        
+        for(int i = 1; i < n; i++){
+           if(temp > arr[i]){
+               win_count++;
+           }
+            else{
+                temp = arr[i];
+                win_count = 1;
+            }
+             if (win_count == k){
+                return temp;
+            }
+        }
+        
+        return temp;
     }
 }
