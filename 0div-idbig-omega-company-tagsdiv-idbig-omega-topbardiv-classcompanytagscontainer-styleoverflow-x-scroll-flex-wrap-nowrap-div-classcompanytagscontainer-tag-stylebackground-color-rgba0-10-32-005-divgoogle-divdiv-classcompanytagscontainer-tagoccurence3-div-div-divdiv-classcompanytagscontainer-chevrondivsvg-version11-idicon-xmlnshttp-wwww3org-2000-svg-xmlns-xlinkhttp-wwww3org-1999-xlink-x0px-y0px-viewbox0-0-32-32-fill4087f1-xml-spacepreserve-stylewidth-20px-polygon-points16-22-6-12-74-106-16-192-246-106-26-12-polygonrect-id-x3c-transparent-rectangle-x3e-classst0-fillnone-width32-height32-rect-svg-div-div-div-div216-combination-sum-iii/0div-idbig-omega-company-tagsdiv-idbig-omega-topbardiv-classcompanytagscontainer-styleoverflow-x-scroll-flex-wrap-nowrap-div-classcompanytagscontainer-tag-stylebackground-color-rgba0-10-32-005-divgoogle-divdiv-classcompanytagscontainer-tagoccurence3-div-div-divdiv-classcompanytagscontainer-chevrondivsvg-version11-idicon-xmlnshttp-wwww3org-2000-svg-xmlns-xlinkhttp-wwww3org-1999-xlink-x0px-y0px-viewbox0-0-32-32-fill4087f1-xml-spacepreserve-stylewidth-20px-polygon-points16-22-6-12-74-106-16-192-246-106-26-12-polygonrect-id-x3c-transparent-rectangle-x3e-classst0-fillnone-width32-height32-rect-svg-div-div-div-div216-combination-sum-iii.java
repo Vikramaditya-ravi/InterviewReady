@@ -1,10 +1,15 @@
 class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
-        return combinationSum(k, n);
+        int[] candidates = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        List<List<Integer>> res = new ArrayList<>();
+        solve(res, new ArrayList<>(), candidates, n, 0, k);
+        return res;
 
     }
 
-    public void solve(List<List<Integer>> res, List<Integer> tempList, int[] candidates, int target, int start, int k) {
+    public void solve(List<List<Integer>> res, List<Integer> tempList, 
+                      int[] candidates, int target, int start, int k) {
+        
         if (target < 0 || tempList.size() > k) {
             return;
         } else if (target == 0 && tempList.size() == k) {
@@ -19,12 +24,5 @@ class Solution {
             }
         }
     }
-
-
-    public List<List<Integer>> combinationSum(int k, int target) {
-        int[] candidates = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
-        List<List<Integer>> res = new ArrayList<>();
-        solve(res, new ArrayList<>(), candidates, target, 0, k);
-        return res;
-    }
+   
 }
