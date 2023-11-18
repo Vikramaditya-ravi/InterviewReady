@@ -1,6 +1,6 @@
-class Solution {    
-    public int maxFrequency(int[] A, int k) {
-       int res = 1, i = 0, j;
+class Solution {
+   public int maxFrequency(int[] A, int k) {
+        int res = 1, i = 0, j;
         long sum = 0;
         Arrays.sort(A);
         for (j = 0; j < A.length; ++j) {
@@ -12,6 +12,5 @@ class Solution {
             res = Math.max(res, j - i + 1);
         }
         return res;
-        
     }
 }
