@@ -1,33 +1,37 @@
 class Solution {
-    public boolean isAP(List<Integer> list) {
-
-        if (list.size() < 2) {
+     public boolean isAP(int[] nums, int start, int end) {
+        int n = end - start+1;
+        if (n < 2) {
             return false;
         }
+        int[] temp = new int[n];
+        int j = 0;
+        for (int i = start; i < end+1; i++) {
+            temp[j] = nums[i];
+            j++;
+        }
 
-        Collections.sort(list);
-        int delta = list.get(1) - list.get(0);
-        for (int i = 1; i < list.size() - 1; i++) {
-            if (list.get(i + 1) - list.get(i) != delta) {
+        Arrays.sort(temp);
+        int d = temp[1] - temp[0];
+        for (int i = 1; i < n - 1; i++) {
+
+            if (temp[i + 1] - temp[i] != d) {
                 return false;
             }
         }
         return true;
+
     }
 
     public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
 
         int n = l.length;
         List<Boolean> result = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
-            int start = l[i];
-            int end = r[i];
-            List<Integer> list = new ArrayList<>();
-            for (int j = start; j < end + 1; j++) {
-                list.add(nums[j]);
-            }
-            result.add(isAP(list));
+            result.add(isAP(nums, l[i], r[i]));
         }
         return result;
+
     }
 }
