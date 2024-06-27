@@ -1,27 +1,36 @@
 class Solution {
-    public int maxStarSum(int[] vals, int[][] edges, int k) {
+   public int maxStarSum(int[] vals, int[][] edges, int k) {
         int res = vals[0];
         if (k == 0) { // corner case
             for (var x : vals) res = Math.max(res, x);
             return res;
         }
-
-        // create graph
         int n = vals.length;
-        List<Integer>[] g = new List[n];
-        for (int i = 0; i < n; i++) g[i] = new ArrayList<>();
-        for (var e : edges) {
-            if (vals[e[1]] > 0) g[e[0]].add(vals[e[1]]);
-            if (vals[e[0]] > 0) g[e[1]].add(vals[e[0]]);
+        List<List<Integer>> list = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            list.add(new ArrayList<>());
         }
 
-        for (int i = 0; i < n; i++) res = Math.max(res, topK(g[i], vals[i], k));
+        for (int[] edge : edges) {
+            int first = edge[0];
+            int second = edge[1];
+            if (vals[second] > 0) {
+                list.get(first).add(vals[second]);
+            }
+            if (vals[first] > 0) {
+                list.get(second).add(vals[first]);
+            }
+        }
+        for(int i = 0; i < n; i++){
+            res = Math.max(res,utility(vals,vals[i],list.get(i),k));
+
+        }
         return res;
     }
-
-    private int topK(List<Integer> l, int res, int k) {
+    public  int utility( int[] vals,int result,List<Integer> tempList,int k){
         Queue<Integer> q = new PriorityQueue<>();
-        for (int x : l) {
+        for (int x : tempList) {
             if (q.size() < k) q.offer(x);
             else if (x > q.peek()) {
                 q.poll();
@@ -29,8 +38,9 @@ class Solution {
             }
         }
 
-        while (!q.isEmpty()) res += q.poll();
+        while (!q.isEmpty()) result += q.poll();
 
-        return res;
+        return result;
+
     }
 }
